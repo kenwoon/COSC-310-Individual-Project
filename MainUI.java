@@ -14,7 +14,7 @@ public class MainUI implements ActionListener {
     JTable dataTable;
     JTextArea consoleOutput;
 
-    public MainUI(String [][] rows, String[] columns, String dbPath) {   // constructor
+    public MainUI(String[][] rows, String[] columns, String dbPath) {   // constructor
         // set up our main components
         frame = new JFrame();
         root = new JPanel();

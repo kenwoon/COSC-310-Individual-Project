@@ -1,14 +1,10 @@
 public class InventorySystem {
     static MainUI ui;
     public static void main(String[] args) {
-        // password check, non-working so far
-        // PasswordUI passwordDialog = new PasswordUI();
-        // passwordDialog.frame.setVisible(true);
-        // System.out.println(passwordDialog.verified);
-        // if (!passwordDialog.verified) {
-        //     System.out.println("yeet");
-        //     return;
-        // }
+        // password check
+        PasswordUI passwordDialog = new PasswordUI();   // thread will wait until passwordDialog is disposed before continuing
+        if (!passwordDialog.verified)
+            return;
 
         ui = new MainUI(new String[][]{{"1", "pencils", "30"}}, new String[]{"id", "name", "currentStock"}, "C:\\Users\\Paul\\Documents\\School\\etcbruhjustgonnapadthisstringsuperlong.csv");
     }

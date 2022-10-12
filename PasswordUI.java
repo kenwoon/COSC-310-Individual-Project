@@ -2,14 +2,13 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 
-public class PasswordUI implements ActionListener {
+public class PasswordUI extends JDialog implements ActionListener {
     boolean verified;
-    JDialog frame;
     JTextField input;
     public PasswordUI() {
-        verified = false;
+        super(null, "Credential Check", ModalityType.DOCUMENT_MODAL);   // set modality so the main thread in InventorySystem that calls this constructor waits until this dialog gets disposed
 
-        frame = new JDialog();
+        verified = false;
         JPanel root = new JPanel();
         root.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         root.setLayout(new GridBagLayout());
@@ -23,14 +22,13 @@ public class PasswordUI implements ActionListener {
         MainUI.addComponent(root, submitButton, 1, 0, 1, 1, 0.1, 1, -1, 0, 0);
 
         // frame parameter boilerplate code
-        frame.add(root);    // add the main root panel to the frame
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        frame.setTitle("Credential Check");
-        frame.pack();
-        frame.setSize(300, 100);
-        frame.setLocation(500, 300);
-        //frame.setVisible(true);     // actually show the window
+        this.add(root);    // add the main root panel to the frame
+        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        //this.setTitle("Credential Check");    // this line commented out as the code for modality already sets the title
+        this.pack();
+        this.setSize(300, 90);
+        this.setLocation(500, 300);
+        this.setVisible(true);     // actually show the window
     }
 
     @Override
@@ -38,10 +36,10 @@ public class PasswordUI implements ActionListener {
         if (e.getActionCommand().equals("submit")) {
             if (input.getText().equals("password")) {
                 verified = true;
-                frame.dispose();
+                this.dispose();
             }
             else {
-                JOptionPane.showMessageDialog(frame, "Incorrect password.", "Error!", 0);
+                JOptionPane.showMessageDialog(this, "Incorrect password.", "Error!", 0);
             }
         }
     }
