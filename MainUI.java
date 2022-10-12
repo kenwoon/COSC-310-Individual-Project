@@ -8,7 +8,6 @@ import java.time.format.DateTimeFormatter;
 // https://docs.oracle.com/javase/7/docs/api/java/awt/GridBagConstraints.html
 // https://docs.oracle.com/javase/7/docs/api/javax/swing/JScrollPane.html
 public class MainUI implements ActionListener {
-    int count = 0;
     JFrame frame;
     JPanel root;
     JLabel dataPath;
@@ -22,10 +21,12 @@ public class MainUI implements ActionListener {
         dataPath = new JLabel(dbPath);
         dataTable = new JTable(rows, columns);
         dataTable.getTableHeader().setReorderingAllowed(false);
+        dataTable.setDefaultEditor(Object.class, null);     // makes the cells non-editable as the JTable edits are all in string format but we want to be more strict and have number checking
         dataTable.setPreferredScrollableViewportSize(new Dimension(300, 100));
         consoleOutput = new JTextArea();
         consoleOutput.setEditable(false);
         consoleOutput.setAutoscrolls(true);
+
         // set up our buttons and the sub layout for them
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(5, 1, 0, 5));
@@ -43,14 +44,10 @@ public class MainUI implements ActionListener {
         // set up our main layout
         root.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         root.setLayout(new GridBagLayout());     // create a gridbaglayout and set it as the root panel's layout manager
-        // add dataPath label
-        addComponent(root, dataPath, 0, 0, 1, 1, 0.7, 0.1, 0, 0);
-        // add dataTable table
-        addComponent(root, new JScrollPane(dataTable), 0, 1, 1, 1, 0.7, 0.5, 0, 0);
-        // add our console log textbox
-        addComponent(root, new JScrollPane(consoleOutput), 0, 2, 1, 1, 0.7, 0.4, 300, 100);
-        // add our sub-layout for buttons
-        addComponent(root, buttonPanel, 1, 0, 1, 3, 0.3, 1, 0, 0);
+        addComponent(root, dataPath, 0, 0, 1, 1, 0.7, 0.1, 0, 0);                           // add dataPath label
+        addComponent(root, new JScrollPane(dataTable), 0, 1, 1, 1, 0.7, 0.5, 0, 0);         // add dataTable table
+        addComponent(root, new JScrollPane(consoleOutput), 0, 2, 1, 1, 0.7, 0.4, 300, 100); // add our console log textbox
+        addComponent(root, buttonPanel, 1, 0, 1, 3, 0.3, 1, 0, 0);                          // add our sub-layout for buttons
 
         // frame parameter boilerplate code
         frame.add(root);    // add the main root panel to the frame
@@ -63,25 +60,21 @@ public class MainUI implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {    // this is a listener method that waits for any event to occur and runs the corresponding code for each event
+    public void actionPerformed(ActionEvent e) {    // this is a listener method that waits for any GUI event to occur and runs the corresponding method for each event
         String command = e.getActionCommand();
-        if (command.equals(("load"))) {
-            log(command + " was requested.");
-        }
-        else if (command.equals("save")) {
-            log(command + " was requested.");
-        }
-        else if (command.equals("add")) {
-            log(command + " was requested.");
-        }
-        else if (command.equals("edit")) {
-            log(command + " was requested.");
-        }
-        else if (command.equals("order")) {
-            log(command + " was requested.");
-        }
-        else {
-            log("unknown command");
+        switch (command) {
+            case "load":
+                InventorySystem.load(); break;
+            case "save":
+                InventorySystem.save(); break;
+            case "add":
+                InventorySystem.add(); break;
+            case "edit":
+                InventorySystem.edit(); break;
+            case "order":
+                InventorySystem.order(); break;
+            default:
+                log("Unknown command: " + command); break;
         }
     }
 
@@ -89,7 +82,7 @@ public class MainUI implements ActionListener {
         consoleOutput.setText(consoleOutput.getText() + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss.S")) + " : " + msg + "\n");
     }
 
-    private void addComponent(JPanel panel, JComponent component, int gridx, int gridy, int gridwidth, int gridheight, double weightx, double weighty, int ipadx, int ipady) {  // wrapper to add components to panels, pass -1 for any argument for them to default
+    public static void addComponent(JPanel panel, JComponent component, int gridx, int gridy, int gridwidth, int gridheight, double weightx, double weighty, int ipadx, int ipady) {  // wrapper to add components to panels, pass -1 for any argument for them to default
         GridBagConstraints constraints = new GridBagConstraints(
             gridx < 0 ? GridBagConstraints.RELATIVE : gridx,
             gridy < 0 ? GridBagConstraints.RELATIVE : gridy,
