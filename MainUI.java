@@ -27,9 +27,10 @@ public class MainUI implements ActionListener {
         consoleOutput.setEditable(false);
         consoleOutput.setAutoscrolls(true);
 
-        // set up our buttons and the sub layout for them
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(5, 1, 0, 5));
+        // set up our main admin buttons and the sub layout for them
+        JPanel mainButtonPanel = new JPanel();
+        mainButtonPanel.setLayout(new GridLayout(6, 1, 0, 5));
+        mainButtonPanel.add(new JLabel("Tools", JLabel.CENTER));
         for (JButton button : new JButton[] {
                 new JButton("Load"),
                 new JButton("Save"),
@@ -38,16 +39,29 @@ public class MainUI implements ActionListener {
                 new JButton("Order") }) {
             button.setActionCommand(button.getText().toLowerCase());
             button.addActionListener(this);
-            buttonPanel.add(button);
+            mainButtonPanel.add(button);
+        }
+
+        // set up our dev tool buttons and the sublayout for them
+        JPanel devButtonPanel = new JPanel();
+        devButtonPanel.setLayout(new GridLayout(3, 1, 0, 5));
+        devButtonPanel.add(new JLabel("Dev Tools", JLabel.CENTER));
+        for (JButton button : new JButton[] {
+                new JButton("Transaction"),
+                new JButton("Set Time") }) {
+            button.setActionCommand(button.getText().toLowerCase());
+            button.addActionListener(this);
+            devButtonPanel.add(button);
         }
 
         // set up our main layout
         root.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         root.setLayout(new GridBagLayout());     // create a gridbaglayout and set it as the root panel's layout manager
-        addComponent(root, dataPath, 0, 0, 1, 1, 0.7, 0.1, 0, 0);                           // add dataPath label
-        addComponent(root, new JScrollPane(dataTable), 0, 1, 1, 1, 0.7, 0.5, 0, 0);         // add dataTable table
-        addComponent(root, new JScrollPane(consoleOutput), 0, 2, 1, 1, 0.7, 0.4, 300, 100); // add our console log textbox
-        addComponent(root, buttonPanel, 1, 0, 1, 3, 0.3, 1, 0, 0);                          // add our sub-layout for buttons
+        addComponent(root, dataPath, 0, 0, 1, 1, 0.7, 0.1, -1, 0, 0);                           // add dataPath label
+        addComponent(root, new JScrollPane(dataTable), 0, 1, 1, 1, 0.7, 0.5, -1, 0, 0);         // add dataTable table
+        addComponent(root, new JScrollPane(consoleOutput), 0, 2, 1, 1, 0.7, 0.4, -1, 300, 100); // add our console log textbox
+        addComponent(root, mainButtonPanel, 1, 0, 1, 2, 0.3, .75, -1, 0, 0);                    // add our sub-layout for main buttons
+        addComponent(root, devButtonPanel, 1, 2, 1, 1, 0.3, 0.25, GridBagConstraints.HORIZONTAL, 0, 0);                    // add our sub-layout for dev buttons
 
         // frame parameter boilerplate code
         frame.add(root);    // add the main root panel to the frame
@@ -73,6 +87,10 @@ public class MainUI implements ActionListener {
                 InventorySystem.edit(); break;
             case "order":
                 InventorySystem.order(); break;
+            case "transaction":
+                InventorySystem.transaction(); break;
+            case "set time":
+                InventorySystem.setTime(); break;
             default:
                 log("Unknown command: " + command); break;
         }
@@ -82,7 +100,7 @@ public class MainUI implements ActionListener {
         consoleOutput.setText(consoleOutput.getText() + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss.S")) + " : " + msg + "\n");
     }
 
-    public static void addComponent(JPanel panel, JComponent component, int gridx, int gridy, int gridwidth, int gridheight, double weightx, double weighty, int ipadx, int ipady) {  // wrapper to add components to panels, pass -1 for any argument for them to default
+    public static void addComponent(JPanel panel, JComponent component, int gridx, int gridy, int gridwidth, int gridheight, double weightx, double weighty, int fill, int ipadx, int ipady) {  // wrapper to add components to panels, pass -1 for any argument for them to default
         GridBagConstraints constraints = new GridBagConstraints(
             gridx < 0 ? GridBagConstraints.RELATIVE : gridx,
             gridy < 0 ? GridBagConstraints.RELATIVE : gridy,
@@ -91,7 +109,7 @@ public class MainUI implements ActionListener {
             weightx < 0 ? 0 : weightx,
             weighty < 0 ? 0 : weighty,
             GridBagConstraints.CENTER,
-            GridBagConstraints.HORIZONTAL,
+            fill < 0 ? GridBagConstraints.BOTH : fill,
             new Insets(0, 0, 0, 0),
             ipadx < 0 ? 0 : ipadx,
             ipady < 0 ? 0 : ipady

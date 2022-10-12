@@ -19,8 +19,8 @@ public class PasswordUI implements ActionListener {
         submitButton.setActionCommand("submit");
         submitButton.addActionListener(this);
 
-        MainUI.addComponent(root, input, 0, 0, 1, 1, 0.9, 1, 0, 0);
-        MainUI.addComponent(root, submitButton, 1, 0, 1, 1, 0.1, 1, 0, 0);
+        MainUI.addComponent(root, input, 0, 0, 1, 1, 0.9, 1, -1, 0, 0);
+        MainUI.addComponent(root, submitButton, 1, 0, 1, 1, 0.1, 1, -1, 0, 0);
 
         // frame parameter boilerplate code
         frame.add(root);    // add the main root panel to the frame

@@ -28,4 +28,10 @@ public class InventorySystem {
     public static void order() {    // this method is called by the listener in MainUI
         ui.log("order");
     }
+    public static void transaction() {
+        ui.log("transaction");
+    }
+    public static void setTime() {
+        ui.log("set time");
+    }
 }
