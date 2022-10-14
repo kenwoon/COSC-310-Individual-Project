@@ -14,12 +14,13 @@ public class PasswordUI extends JDialog implements ActionListener {
         root.setLayout(new GridBagLayout());
         input = new JPasswordField();
         input.setPreferredSize(new Dimension(270, 50));
+        input.setFont(input.getFont().deriveFont(18f));
         JButton submitButton = new JButton("Submit");
         submitButton.setActionCommand("submit");
         submitButton.addActionListener(this);
 
-        MainUI.addComponent(root, input, 0, 0, 1, 1, 0.9, 1, -1, 0, 0);
-        MainUI.addComponent(root, submitButton, 1, 0, 1, 1, 0.1, 1, -1, 0, 0);
+        root.add(input, new GridBagConstraints(0, 0, 1, 1, 0.9, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+        root.add(submitButton, new GridBagConstraints(1, 0, 1, 1, 0.1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
         // frame parameter boilerplate code
         this.add(root);    // add the main root panel to the frame
