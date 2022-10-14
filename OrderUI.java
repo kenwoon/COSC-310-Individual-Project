@@ -6,6 +6,7 @@ public class OrderUI extends JDialog implements ActionListener {
     public OrderUI() {
         super(null, "Order Product", ModalityType.DOCUMENT_MODAL);   // set modality so the main thread in InventorySystem that calls this constructor waits until this dialog gets disposed
         
+        this.setVisible(true);
     }
 
     @Override
