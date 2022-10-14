@@ -15,7 +15,7 @@ public class InventorySystem {
         //     return;
         
         date = LocalDate.now();
-        ui = new MainUI(new String[][]{{"1", "pencils", "30"}, {"2", "pens", "45"}}, new String[]{"id", "name", "currentStock"}, "C:\\Users\\Paul\\Documents\\School\\etcbruhjustgonnapadthisstringsuperlong.csv");
+        ui = new MainUI(new String[][]{{"1", "pencils", "30", "4.99", "0.5", "3 days"}, {"2", "pens", "45", "7.99", "1", "2 days"}}, new String[]{"id", "name", "currentStock", "sellPrice", "buyPrice", "shipTime"}, "C:\\Users\\Paul\\Documents\\School\\etcbruhjustgonnapadthisstringsuperlong.csv");
 
         // set up our JFileChooser for loading and saving CSVs
         fileDialog = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
@@ -56,14 +56,14 @@ public class InventorySystem {
     }
     public static void order() {            // UNFINISHED
         TransactionUI dialog = new TransactionUI(ui.dataTable, "Order more stock");
-        if (dialog.transaction != null) {
-            ui.log("received order: " + dialog.transaction.toString());
+        if (dialog.products != null) {
+            ui.log("received order: " + dialog.products.toString());
         }
     }
     public static void transaction() {      // UNFINISHED
         TransactionUI dialog = new TransactionUI(ui.dataTable, "Fake a Transaction");
-        if (dialog.transaction != null) {
-            ui.log("received transaction: " + dialog.transaction.toString());
+        if (dialog.products != null) {
+            ui.log("received transaction: " + dialog.products.toString());
         }
     }
     public static void setTime() {          // UNFINISHED
