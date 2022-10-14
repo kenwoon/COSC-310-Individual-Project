@@ -32,37 +32,39 @@ public class InventorySystem {
     }
 
     // methods called by the listener in MainUI
-    public static void load() {
+    public static void load() {             // UNFINISHED
         ui.log("load");
         if (fileDialog.showOpenDialog(ui) == JFileChooser.APPROVE_OPTION) {
             File path = fileDialog.getSelectedFile();
             // use Database.load(path.getAbsolutePath()) here
         }
     }
-    public static void save() {
+    public static void save() {             // UNFINISHED
         ui.log("save");
         if (fileDialog.showSaveDialog(ui) == JFileChooser.APPROVE_OPTION) {
             File path = fileDialog.getSelectedFile();
             // use Database.save(path.getAbsolutePath()) here
         }
     }
-    public static void add() { 
+    public static void add() {              // UNFINISHED
         AddUI dialog = new AddUI();
         ui.log("add");
     }
-    public static void edit() {
+    public static void edit() {             // UNFINISHED
         EditUI dialog = new EditUI();
         ui.log("edit");
     }
-    public static void order() {
+    public static void order() {            // UNFINISHED
         OrderUI dialog = new OrderUI();
         ui.log("order");
     }
-    public static void transaction() {
+    public static void transaction() {      // UNFINISHED
         TransactionUI dialog = new TransactionUI(ui.dataTable);
-        ui.log("transaction");
+        if (dialog.transaction != null) {
+            ui.log("received transaction" + dialog.transaction.toString());
+        }
     }
-    public static void setTime() {
+    public static void setTime() {          // UNFINISHED
         SetTimeUI dialog = new SetTimeUI();
         if (dialog.timeSpan != null) {
             date = date.plus(dialog.timeSpan);

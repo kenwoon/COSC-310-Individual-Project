@@ -1,9 +1,7 @@
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
-import java.time.*;
 import java.time.Period;
-import java.time.temporal.TemporalUnit;
 
 public class SetTimeUI extends JDialog implements ActionListener {
     JSpinner monthSpinner;
