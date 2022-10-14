@@ -47,11 +47,11 @@ public class InventorySystem {
         }
     }
     public static void add() {              // UNFINISHED
-        ProductUI dialog = new ProductUI();
+        ProductUI dialog = new ProductUI("Add Product");
         ui.log("add");
     }
     public static void edit() {             // UNFINISHED
-        ProductUI dialog = new ProductUI();
+        ProductUI dialog = new ProductUI("Edit Product");
         ui.log("edit");
     }
     public static void order() {            // UNFINISHED

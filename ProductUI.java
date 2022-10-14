@@ -6,8 +6,8 @@ public class ProductUI extends JDialog implements ActionListener {
     JSpinner idInput, currentStockInput, sellPriceInput, buyPriceInput, shipTimeMonthInput, shipTimeDayInput;
     JTextField nameInput;
 
-    public ProductUI() {   // change to allow a Product argument to pre-fill the boxes etc
-        super(null, "Edit Product", ModalityType.DOCUMENT_MODAL);   // set modality so the main thread in InventorySystem that calls this constructor waits until this dialog gets disposed
+    public ProductUI(String title) {   // change to allow a Product argument to pre-fill the boxes etc
+        super(null, title, ModalityType.DOCUMENT_MODAL);   // set modality so the main thread in InventorySystem that calls this constructor waits until this dialog gets disposed
         
         JPanel root = new JPanel();
         root.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -53,9 +53,18 @@ public class ProductUI extends JDialog implements ActionListener {
             int shipTimeMonths = (int)shipTimeMonthInput.getValue();
             int shipTimeDays = (int)shipTimeDayInput.getValue();
 
-            JOptionPane.showMessageDialog(this, String.format("%d, %s, %d, %f, %f, %d, %d", id, name, currentStock, sellPrice, buyPrice, shipTimeMonths, shipTimeDays));
-            // set a class level variable of type Product before disposing
-            this.dispose();
+            if (id == 0)
+                JOptionPane.showMessageDialog(this, "Product id cannot be 0.");
+            else if (name.equals(""))
+                JOptionPane.showMessageDialog(this, "Product name cannot be empty.");
+            else if (sellPrice == 0 || buyPrice == 0)
+                JOptionPane.showMessageDialog(this, "Product prices cannot be 0.");
+            else if (shipTimeMonths + shipTimeDays == 0)
+                JOptionPane.showMessageDialog(this, "Product ship time cannot be 0.");
+            else {  // no errors, return
+                // set a class level variable of type Product before disposing
+                this.dispose();
+            }
         }
     }
 }
