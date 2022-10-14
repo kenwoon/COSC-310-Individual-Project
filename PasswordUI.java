@@ -19,8 +19,9 @@ public class PasswordUI extends JDialog implements ActionListener {
         submitButton.setActionCommand("submit");
         submitButton.addActionListener(this);
 
-        root.add(input, new GridBagConstraints(0, 0, 1, 1, 0.9, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-        root.add(submitButton, new GridBagConstraints(1, 0, 1, 1, 0.1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+        Insets dummy = new Insets(0, 0, 0, 0);
+        root.add(input, new GridBagConstraints(0, 0, 1, 1, 0.9, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, dummy, 0, 0));
+        root.add(submitButton, new GridBagConstraints(1, 0, 1, 1, 0.1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, dummy, 0, 0));
 
         // frame parameter boilerplate code
         this.add(root);    // add the main root panel to the frame

@@ -51,13 +51,14 @@ public class MainUI extends JFrame implements ActionListener {
         }
 
         // set up our main layout
+        Insets dummy = new Insets(0, 0, 0, 0);
         root.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         root.setLayout(new GridBagLayout());     // create a gridbaglayout and set it as the root panel's layout manager
-        root.add(dataPath, new GridBagConstraints(0, 0, 1, 1, 0.7, 0.1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));// add dataPath label
-        root.add(new JScrollPane(dataTable), new GridBagConstraints(0, 1, 1, 1, 0.7, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));// add dataTable table
-        root.add(new JScrollPane(consoleOutput), new GridBagConstraints(0, 2, 1, 1, 0.7, 0.4, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 300, 100));// add our console log textbox
-        root.add(mainButtonPanel, new GridBagConstraints(1, 0, 1, 2, 0.3, .75, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));// add our sub-layout for main buttons
-        root.add(devButtonPanel, new GridBagConstraints(1, 2, 1, 1, 0.3, 0.25, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));// add our sub-layout for dev buttons
+        root.add(dataPath, new GridBagConstraints(0, 0, 1, 1, 0.7, 0.1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, dummy, 0, 0));// add dataPath label
+        root.add(new JScrollPane(dataTable), new GridBagConstraints(0, 1, 1, 1, 0.7, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, dummy, 0, 0));// add dataTable table
+        root.add(new JScrollPane(consoleOutput), new GridBagConstraints(0, 2, 1, 1, 0.7, 0.4, GridBagConstraints.CENTER, GridBagConstraints.BOTH, dummy, 300, 100));// add our console log textbox
+        root.add(mainButtonPanel, new GridBagConstraints(1, 0, 1, 2, 0.3, .75, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, dummy, 0, 0));// add our sub-layout for main buttons
+        root.add(devButtonPanel, new GridBagConstraints(1, 2, 1, 1, 0.3, 0.25, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, dummy, 0, 0));// add our sub-layout for dev buttons
 
         // frame parameter boilerplate code
         this.add(root);    // add the main root panel to the frame

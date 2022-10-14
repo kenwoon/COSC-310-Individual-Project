@@ -1,18 +1,20 @@
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
-
 import java.io.*;
+import java.time.*;
 
 public class InventorySystem {
     static MainUI ui;
     static JFileChooser fileDialog;
+    static LocalDate date;
     public static void main(String[] args) {
         // password check, commented out for now because testing easier
         // PasswordUI passwordDialog = new PasswordUI();   // thread will wait until passwordDialog is disposed before continuing because of modality built into PasswordUI
         // if (!passwordDialog.verified)
         //     return;
         
+        date = LocalDate.now();
         ui = new MainUI(new String[][]{{"1", "pencils", "30"}, {"2", "pens", "45"}}, new String[]{"id", "name", "currentStock"}, "C:\\Users\\Paul\\Documents\\School\\etcbruhjustgonnapadthisstringsuperlong.csv");
 
         // set up our JFileChooser for loading and saving CSVs
@@ -62,6 +64,9 @@ public class InventorySystem {
     }
     public static void setTime() {
         SetTimeUI dialog = new SetTimeUI();
-        ui.log("set time");
+        if (dialog.timeSpan != null) {
+            date = date.plus(dialog.timeSpan);
+            ui.log("Increased date to (Y/M/D): " + date.toString());
+        }
     }
 }
