@@ -55,13 +55,15 @@ public class InventorySystem {
         ui.log("edit");
     }
     public static void order() {            // UNFINISHED
-        OrderUI dialog = new OrderUI();
-        ui.log("order");
+        TransactionUI dialog = new TransactionUI(ui.dataTable, "Order more stock");
+        if (dialog.transaction != null) {
+            ui.log("received order: " + dialog.transaction.toString());
+        }
     }
     public static void transaction() {      // UNFINISHED
-        TransactionUI dialog = new TransactionUI(ui.dataTable);
+        TransactionUI dialog = new TransactionUI(ui.dataTable, "Fake a Transaction");
         if (dialog.transaction != null) {
-            ui.log("received transaction" + dialog.transaction.toString());
+            ui.log("received transaction: " + dialog.transaction.toString());
         }
     }
     public static void setTime() {          // UNFINISHED

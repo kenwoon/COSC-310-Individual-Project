@@ -8,8 +8,8 @@ public class TransactionUI extends JDialog implements ActionListener {
     ArrayList<JSpinner> spinners;
     ArrayList<String> names;
     Dictionary<String, Integer> transaction;
-    public TransactionUI(JTable _dataTable) {
-        super(null, "Fake a Transaction", ModalityType.DOCUMENT_MODAL);   // set modality so the main thread in InventorySystem that calls this constructor waits until this dialog gets disposed
+    public TransactionUI(JTable _dataTable, String title) {
+        super(null, title, ModalityType.DOCUMENT_MODAL);   // set modality so the main thread in InventorySystem that calls this constructor waits until this dialog gets disposed
         
         spinners = new ArrayList<JSpinner>();
         names = new ArrayList<String>();
