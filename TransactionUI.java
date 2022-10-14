@@ -26,7 +26,7 @@ public class TransactionUI extends JDialog implements ActionListener {
         Insets dummy = new Insets(0, 0, 0, 0);
         for (int i = 0; i < dataTable.getRowCount(); i++) {
             String name = dataTable.getModel().getValueAt(i, 1).toString(); // might have to change column index when the actual database gets created
-            JSpinner spinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
+            JSpinner spinner = new JSpinner(new SpinnerNumberModel(0, 0, null, 1));
             subPanel.add(spinner);
             subPanel.add(new JLabel(name));
             spinners.add(spinner);
