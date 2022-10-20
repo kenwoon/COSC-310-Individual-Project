@@ -3,7 +3,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-// import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -88,6 +87,17 @@ public class Database
             e.printStackTrace();
         }
     }
+}
+
+class Product
+{
+    private int id;
+    private String name;
+    private int currentStock;
+    private double sellPrice;
+    private double buyPrice;
+    private int shipTimeMonths;
+    private int shipTimeDays;
 
     public void addProduct(Product p) {
         products.add(p);
