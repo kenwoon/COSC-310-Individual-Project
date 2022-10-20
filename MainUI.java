@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 
 public class MainUI extends JFrame implements ActionListener {
     JPanel root;
-    JLabel dataPath;
+    JLabel revenueLabel;
     JTable dataTable;
     JTextArea consoleOutput;
 
@@ -20,13 +20,13 @@ public class MainUI extends JFrame implements ActionListener {
 
         // set up our main components, mainly dataTable
         root = new JPanel();
-        dataPath = new JLabel(db.filepath);
+        revenueLabel = new JLabel(String.format("$%.2f", 0.00));
         dataTable = new JTable(rows, new String[] {"id", "name", "stock", "sellPrice", "buyPrice", "shipTimeDays"});
         resizeColumns();
         dataTable.getTableHeader().setReorderingAllowed(false); // disallow re-ordering of the columns in the table
         dataTable.setDefaultEditor(Object.class, null);     // makes the cells non-editable as the JTable edits are all in string format but we want to be more strict and have number checking
         dataTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);        // only allow the user to select one row at a time
-        dataTable.setPreferredScrollableViewportSize(new Dimension(500, 150));
+        dataTable.setPreferredScrollableViewportSize(new Dimension(500, 200));
         consoleOutput = new JTextArea();
         consoleOutput.setEditable(false);
         consoleOutput.setAutoscrolls(true);
@@ -62,9 +62,9 @@ public class MainUI extends JFrame implements ActionListener {
         Insets dummy = new Insets(0, 0, 0, 0);
         root.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         root.setLayout(new GridBagLayout());     // create a gridbaglayout and set it as the root panel's layout manager
-        root.add(dataPath, new GridBagConstraints(0, 0, 1, 1, 0.85, 0.1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, dummy, 0, 0));// add dataPath label
-        root.add(new JScrollPane(dataTable), new GridBagConstraints(0, 1, 1, 1, 0.85, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, dummy, 0, 0));// add dataTable table
-        root.add(new JScrollPane(consoleOutput), new GridBagConstraints(0, 2, 1, 1, 0.85, 0.4, GridBagConstraints.CENTER, GridBagConstraints.BOTH, dummy, 300, 100));// add our console log textbox
+        root.add(revenueLabel, new GridBagConstraints(0, 0, 1, 1, 0.85, 0.1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, dummy, 0, 0));// add dataPath label
+        root.add(new JScrollPane(dataTable), new GridBagConstraints(0, 1, 1, 1, 0.85, 0.6, GridBagConstraints.CENTER, GridBagConstraints.BOTH, dummy, 0, 0));// add dataTable table
+        root.add(new JScrollPane(consoleOutput), new GridBagConstraints(0, 2, 1, 1, 0.85, 0.3, GridBagConstraints.CENTER, GridBagConstraints.BOTH, dummy, 300, 100));// add our console log textbox
         root.add(mainButtonPanel, new GridBagConstraints(1, 0, 1, 2, 0.15, .75, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, dummy, 0, 0));// add our sub-layout for main buttons
         root.add(devButtonPanel, new GridBagConstraints(1, 2, 1, 1, 0.15, 0.25, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, dummy, 0, 0));// add our sub-layout for dev buttons
 
@@ -116,8 +116,6 @@ public class MainUI extends JFrame implements ActionListener {
     }
 
     public void updateRows(Database db) {
-        dataPath.setText(db.filepath);  // set the filepath label
-
         // set up our new data model with the new db
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(new String[] {"id", "name", "stock", "sellPrice", "buyPrice", "shipTimeDays"});
@@ -135,5 +133,9 @@ public class MainUI extends JFrame implements ActionListener {
             return -1;
         else
             return Integer.parseInt(dataTable.getModel().getValueAt(index, 0).toString());
+    }
+
+    public void updateRevenue(double revenue) {
+        revenueLabel.setText(String.format("$%.2f", revenue));
     }
 }

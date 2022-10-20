@@ -3,22 +3,29 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.io.*;
 import java.time.*;
+import java.util.*;
 
 public class InventorySystemMain {
     static MainUI ui;
     static JFileChooser fileDialog;
     static LocalDate date;
     static Database db;
+    static List<Order> orders;
+    static double revenue;
     public static void main(String[] args) {
         // password check, commented out for now because testing easier
         // PasswordUI passwordDialog = new PasswordUI();   // thread will wait until passwordDialog is disposed before continuing because of modality built into PasswordUI
         // if (!passwordDialog.verified)
         //     return;
         
+        // initialize class level variables
         date = LocalDate.now();
         db = new Database("dummy_data.csv");
+        orders = new ArrayList<Order>();
+        revenue = 0;
         ui = new MainUI(db);
-
+        ui.log("Loaded: " + "dummy_data.csv");
+        
         // set up our JFileChooser for loading and saving CSVs
         fileDialog = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         fileDialog.setFileFilter(new FileFilter() {
@@ -46,8 +53,9 @@ public class InventorySystemMain {
     public static void save() {
         if (fileDialog.showSaveDialog(ui) == JFileChooser.APPROVE_OPTION) {
             String path = fileDialog.getSelectedFile().getAbsolutePath();
-            Database.saveCSV(path + ".csv", db.products);
-            ui.log("Saved current table contents to: " + path + ".csv");
+            path = path.endsWith(".csv") ? path : path + ".csv";
+            Database.saveCSV(path, db.products);
+            ui.log("Saved current table contents to: " + path);
         }
     }
     public static void add() {
@@ -82,23 +90,54 @@ public class InventorySystemMain {
         else
             ui.log("No row selected, so product editing failed.");
     }
-    public static void order() {            // UNFINISHED
+    public static void order() {
         TransactionUI dialog = new TransactionUI(ui.dataTable, "Order more stock");
         if (dialog.products != null) {
-            ui.log("received order: " + dialog.products.toString());
+            for (int id : dialog.products.keySet()) {     // add an order for each item in dialog.products
+                int quantity = dialog.products.get(id);
+                if (quantity > 0) {     // decrease revenue and place the order
+                    revenue -= Database.getProductById(id, db.products).get(0).getBuyPrice() * quantity;
+                    orders.add(new Order(Database.getProductById(id, db.products).get(0), quantity, date));
+                }
+            }
+            ui.updateRevenue(revenue);
+            ui.log("Placed order(s).");
         }
+        else
+            ui.log("Order canceled by user.");
     }
-    public static void transaction() {      // UNFINISHED
+    public static void transaction() {
         TransactionUI dialog = new TransactionUI(ui.dataTable, "Fake a Transaction");
         if (dialog.products != null) {
-            ui.log("received transaction: " + dialog.products.toString());
+            for (int id : dialog.products.keySet()) {
+                int quantity = dialog.products.get(id);
+                if (quantity > 0) {     // increase revenue and decrease the inventory
+                    Product p = Database.getProductById(id, db.products).get(0);
+                    revenue += p.getSellPrice() * quantity;
+                    p.setCurrentStock(p.getCurrentStock() - quantity);
+                }
+            }
+            ui.updateRows(db);
+            ui.updateRevenue(revenue);
+            ui.log("Customer transaction occurred.");
         }
+        else
+            ui.log("Transaction canceled by user.");
     }
-    public static void setTime() {          // UNFINISHED
+    public static void setTime() {
         SetTimeUI dialog = new SetTimeUI();
         if (dialog.timeSpan != null) {
             date = date.plus(dialog.timeSpan);
             ui.log("Increased date to (Y/M/D): " + date.toString());
+
+            // check for if any orders have arrived
+            for (Order order : orders) {
+                if (order.hasArrived(date)) {
+                    order.receive(db, ui);
+                }
+            }
         }
+        else
+            ui.log("Set time operation canceled by user.");
     }
 }
