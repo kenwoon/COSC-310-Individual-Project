@@ -4,10 +4,12 @@ public class Order {
     Product product;
     int quantity;
     LocalDate date;
+    boolean isActive;
     public Order(Product _product, int _quantity, LocalDate _date) {
         this.product = _product;
         this.quantity = _quantity;
         this.date = _date;
+        this.isActive = true;
     }
 
     public boolean hasArrived(LocalDate currentDate) {
@@ -19,10 +21,14 @@ public class Order {
     }
 
     public void receive(Database db, MainUI ui) {
-        Product original = Database.getProductById(product.getId(), db.products).get(0);
-        int total = original.getCurrentStock() + quantity;
-        original.setCurrentStock(total);
-        ui.updateRows(db);
-        ui.log("Order of " + quantity + " '" + product.getName() + "' has been received.");
+        if (isActive) {
+            Product original = Database.getProductById(product.getId(), db.products).get(0);
+            int total = original.getCurrentStock() + quantity;
+            original.setCurrentStock(total);
+            ui.updateRows(db);
+            ui.log("Order of " + quantity + " '" + product.getName() + "' has been received.");
+    
+            isActive = false;
+        }
     }
 }
