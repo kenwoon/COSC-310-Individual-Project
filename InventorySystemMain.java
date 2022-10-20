@@ -14,9 +14,9 @@ public class InventorySystemMain {
     static double revenue;
     public static void main(String[] args) {
         // password check, commented out for now because testing easier
-        // PasswordUI passwordDialog = new PasswordUI();   // thread will wait until passwordDialog is disposed before continuing because of modality built into PasswordUI
-        // if (!passwordDialog.verified)
-        //     return;
+        PasswordUI passwordDialog = new PasswordUI();   // thread will wait until passwordDialog is disposed before continuing because of modality built into PasswordUI
+        if (!passwordDialog.verified)
+            return;
         
         // initialize class level variables
         date = LocalDate.now();
@@ -79,14 +79,15 @@ public class InventorySystemMain {
             Product original = Database.getProductById(id, db.products).get(0);
             ProductUI dialog = new ProductUI("Edit Product", original);
             if (dialog.product != null) {   // check if input was validated and a valid product was returned
-                if (Database.getProductById(dialog.product.getId(), db.products).size() > 0 || dialog.product.getId() < 1)
+                if (dialog.product.getId() == original.getId()) {}  // empty if to allow the same id to be used in an edit
+                else if (Database.getProductById(dialog.product.getId(), db.products).size() > 0 || dialog.product.getId() < 1) {
                     ui.log("Id already in use or Id negative, product edit failed.");
-                else {
-                    db.removeProduct(original);
-                    db.addProduct(dialog.product);
-                    ui.updateRows(db);
-                    ui.log("Edit succeeded.");
+                    return;
                 }
+                db.removeProduct(original);
+                db.addProduct(dialog.product);
+                ui.updateRows(db);
+                ui.log("Edit succeeded.");
             }
             else
                 ui.log("Edit canceled by user.");
