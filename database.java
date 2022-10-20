@@ -87,25 +87,14 @@ public class Database
             e.printStackTrace();
         }
     }
-}
-
-class Product
-{
-    private int id;
-    private String name;
-    private int currentStock;
-    private double sellPrice;
-    private double buyPrice;
-    private int shipTimeMonths;
-    private int shipTimeDays;
-
+    
     public void addProduct(Product p) {
         products.add(p);
     }
     public void removeProduct(Product p) {
         products.remove(p);
     }
-
+    
     private static Product createProduct(String[] metadata)
     {
         int id = Integer.parseInt(metadata[0]);
@@ -117,7 +106,7 @@ class Product
         
         return new Product(id, name, currentStock, sellPrice, buyPrice, shipTimeDays);
     }
-
+    
     public static List<Product> getProductById(int id, List<Product> products)
     {
         List<Product> searchList = new ArrayList<>();
@@ -127,10 +116,10 @@ class Product
             if (p.getId() == id)
                 searchList.add(p);
         }
-
+    
         return searchList;
     }
-
+    
     private static List<Product> getProductByName(String name, List<Product> products)
     {
         List<Product> searchList = new ArrayList<>();
@@ -140,10 +129,10 @@ class Product
             if (p.getName().equals(name))
                 searchList.add(p);
         }
-
+    
         return searchList;
     }
-
+    
     private static List<Product> getProductByStock(int currentStock, List<Product> products)
     {
         List<Product> searchList = new ArrayList<>();
@@ -153,10 +142,10 @@ class Product
             if (p.getCurrentStock() == currentStock)
                 searchList.add(p);
         }
-
+    
         return searchList;
     }
-
+    
     private static List<Product> getProductBySellPrice(double sellPrice, List<Product> products)
     {
         List<Product> searchList = new ArrayList<>();
@@ -166,10 +155,10 @@ class Product
             if (p.getSellPrice() == sellPrice)
                 searchList.add(p);
         }
-
+    
         return searchList;
     }
-
+    
     private static List<Product> getProductByBuyPrice(double buyPrice, List<Product> products)
     {
         List<Product> searchList = new ArrayList<>();
@@ -179,10 +168,10 @@ class Product
             if (p.getBuyPrice() == buyPrice)
                 searchList.add(p);
         }
-
+    
         return searchList;
     }
-
+    
     private static List<Product> getProductBySTD(int shipTimeDays, List<Product> products)
     {
         List<Product> searchList = new ArrayList<>();
@@ -192,7 +181,7 @@ class Product
             if (p.getShipTimeDays() == shipTimeDays)
                 searchList.add(p);
         }
-
+    
         return searchList;
     }
 }
