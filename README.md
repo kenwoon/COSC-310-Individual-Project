@@ -4,9 +4,9 @@ This is the public repository team 5 will be using to collaborate on the project
 
 ### Compile instructions:
  - After cloning the whole repo, navigate to the src directory using the command prompt for your system (terminal/cmd/mac terminal).
- - run the command `javac *.java -d ../bin/`
- - change directory to the bin folder and run `java InventorySystemMain`
- - note that the password for the credential check is `password`
+ - run the command `javac -cp ../lib/* -d ../bin/ *.java`
+ - change directory to the bin folder and run `java -cp ../lib/*; InventorySystemMain`
+ - note that the password for the credential check is `password` but can be changed via the UI and will be saved and encrypted in bin/InventorySystem.state
 
 ### Explanation of classes:
  - **InventorySystemMain:** this is the main class with the main logic, although the program is mainly event-based. It contains 7 methods that are called by event listener within the MainUI class: load, save, add, edit, order, transaction, and setTime. This class contains instances of MainUI (for methods related to the GUI), JFileChooser (for opening/saving files), LocalDate (for determining when Orders have arrived), Database (for tracking the loaded database), an arraylist of Orders (for tracking all current Orders), and a double revenue for tracking the total gain/loss of that session.
