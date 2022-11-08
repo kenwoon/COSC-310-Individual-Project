@@ -3,12 +3,15 @@ import java.awt.event.*;
 import java.awt.*;
 
 public class PasswordUI extends JDialog implements ActionListener {
-    boolean verified;
+    boolean verified, editing;
     JTextField input;
-    public PasswordUI() {
-        super(null, "Credential Check", ModalityType.DOCUMENT_MODAL);   // set modality so the main thread in InventorySystem that calls this constructor waits until this dialog gets disposed
+    String password;
+    public PasswordUI(String _password, boolean _editing) {
+        super(null, _editing ? "Change password" : "Credential Check", ModalityType.DOCUMENT_MODAL);   // set modality so the main thread in InventorySystem that calls this constructor waits until this dialog gets disposed
 
         verified = false;
+        editing = _editing;
+        password = _password;
         JPanel root = new JPanel();
         root.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         root.setLayout(new GridBagLayout());
@@ -36,13 +39,21 @@ public class PasswordUI extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {    // this is a listener method that waits for any GUI event to occur and runs the corresponding method for each event
         if (e.getActionCommand().equals("submit")) {
-            if (input.getText().equals("password")) {
-                verified = true;
-                this.dispose();
+            if (editing) {
+                password = input.getText();
+                if (password.equals(""))
+                    return;
+                JOptionPane.showMessageDialog(this, "Password set to '" + password + "'");
             }
             else {
-                JOptionPane.showMessageDialog(this, "Incorrect password.", "Error!", 0);
+                if (input.getText().equals(password))
+                    verified = true;
+                else {
+                    JOptionPane.showMessageDialog(this, "Incorrect password.", "Error!", 0);
+                    return;
+                }
             }
+            this.dispose();
         }
     }
 }

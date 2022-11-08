@@ -8,23 +8,17 @@ import java.util.*;
 public class InventorySystemMain {
     static MainUI ui;
     static JFileChooser fileDialog;
-    static LocalDate date;
-    static Database db;
-    static List<Order> orders;
-    static double revenue;
+    static ProgramState state;
     public static void main(String[] args) {
+        state = new ProgramState(); // load previous state
+
         // password check, commented out for now because testing easier
-        PasswordUI passwordDialog = new PasswordUI();   // thread will wait until passwordDialog is disposed before continuing because of modality built into PasswordUI
+        PasswordUI passwordDialog = new PasswordUI(state.password, false);   // thread will wait until passwordDialog is disposed before continuing because of modality built into PasswordUI
         if (!passwordDialog.verified)
             return;
         
-        // initialize class level variables
-        date = LocalDate.now();
-        db = new Database("dummy_data.csv");
-        orders = new ArrayList<Order>();
-        revenue = 0;
-        ui = new MainUI(db);
-        ui.log("Loaded: " + "dummy_data.csv");
+        ui = new MainUI(state);
+        ui.log("Loaded: " + state.db.filepath);
         
         // set up our JFileChooser for loading and saving CSVs
         fileDialog = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
@@ -44,9 +38,9 @@ public class InventorySystemMain {
     public static void load() {
         if (fileDialog.showOpenDialog(ui) == JFileChooser.APPROVE_OPTION) {
             String path = fileDialog.getSelectedFile().getAbsolutePath();
-            db.filepath = path;
-            db.products = Database.loadCSV(path);
-            ui.updateRows(db);
+            state.db.filepath = path;
+            state.db.products = Database.loadCSV(path);
+            ui.updateRows(state.db);
             ui.log("Loaded: " + path);
         }
     }
@@ -54,7 +48,7 @@ public class InventorySystemMain {
         if (fileDialog.showSaveDialog(ui) == JFileChooser.APPROVE_OPTION) {
             String path = fileDialog.getSelectedFile().getAbsolutePath();
             path = path.endsWith(".csv") ? path : path + ".csv";
-            Database.saveCSV(path, db.products);
+            Database.saveCSV(path, state.db.products);
             ui.log("Saved current table contents to: " + path);
         }
     }
@@ -62,11 +56,11 @@ public class InventorySystemMain {
         ProductUI dialog = new ProductUI("Add Product", null);
         Product product = dialog.product;
         if (product != null) {
-            if (Database.getProductById(product.getId(), db.products).size() > 0 || product.getId() < 1)
+            if (Database.getProductById(product.getId(), state.db.products).size() > 0 || product.getId() < 1)
                 ui.log("Id already in use or Id negative, product add failed.");
             else {
-                db.addProduct(product);
-                ui.updateRows(db);
+                state.db.addProduct(product);
+                ui.updateRows(state.db);
                 ui.log("Added product '" + product.getName() + "' successfully.");
             }
         }
@@ -76,17 +70,17 @@ public class InventorySystemMain {
     public static void edit() {
         int id = ui.getSelectedRow();   // will return -1 if no row selected
         if (id > 0) {       // check if a row is selected
-            Product original = Database.getProductById(id, db.products).get(0);
+            Product original = Database.getProductById(id, state.db.products).get(0);
             ProductUI dialog = new ProductUI("Edit Product", original);
             if (dialog.product != null) {   // check if input was validated and a valid product was returned
                 if (dialog.product.getId() == original.getId()) {}  // empty if to allow the same id to be used in an edit
-                else if (Database.getProductById(dialog.product.getId(), db.products).size() > 0 || dialog.product.getId() < 1) {
+                else if (Database.getProductById(dialog.product.getId(), state.db.products).size() > 0 || dialog.product.getId() < 1) {
                     ui.log("Id already in use or Id negative, product edit failed.");
                     return;
                 }
-                db.removeProduct(original);
-                db.addProduct(dialog.product);
-                ui.updateRows(db);
+                state.db.removeProduct(original);
+                state.db.addProduct(dialog.product);
+                ui.updateRows(state.db);
                 ui.log("Edit succeeded.");
             }
             else
@@ -101,11 +95,11 @@ public class InventorySystemMain {
             for (int id : dialog.products.keySet()) {     // add an order for each item in dialog.products
                 int quantity = dialog.products.get(id);
                 if (quantity > 0) {     // decrease revenue and place the order
-                    revenue -= Database.getProductById(id, db.products).get(0).getBuyPrice() * quantity;
-                    orders.add(new Order(Database.getProductById(id, db.products).get(0), quantity, date));
+                    state.revenue -= Database.getProductById(id, state.db.products).get(0).getBuyPrice() * quantity;
+                    state.orders.add(new Order(Database.getProductById(id, state.db.products).get(0), quantity, state.date));
                 }
             }
-            ui.updateRevenue(revenue);
+            ui.updateRevenue(state.revenue);
             ui.log("Placed order(s).");
         }
         else
@@ -117,13 +111,13 @@ public class InventorySystemMain {
             for (int id : dialog.products.keySet()) {
                 int quantity = dialog.products.get(id);
                 if (quantity > 0) {     // increase revenue and decrease the inventory
-                    Product p = Database.getProductById(id, db.products).get(0);
-                    revenue += p.getSellPrice() * quantity;
+                    Product p = Database.getProductById(id, state.db.products).get(0);
+                    state.revenue += p.getSellPrice() * quantity;
                     p.setCurrentStock(p.getCurrentStock() - quantity);
                 }
             }
-            ui.updateRows(db);
-            ui.updateRevenue(revenue);
+            ui.updateRows(state.db);
+            ui.updateRevenue(state.revenue);
             ui.log("Customer transaction occurred.");
         }
         else
@@ -132,21 +126,30 @@ public class InventorySystemMain {
     public static void setTime() {
         SetTimeUI dialog = new SetTimeUI();
         if (dialog.timeSpan != null) {
-            date = date.plus(dialog.timeSpan);
-            ui.log("Increased date to (Y/M/D): " + date.toString());
+            state.date = state.date.plus(dialog.timeSpan);
+            ui.log("Increased date to (Y/M/D): " + state.date.toString());
 
             // check for if any orders have arrived
-            for (Order order : orders) {
-                if (order.hasArrived(date)) {
-                    order.receive(db, ui);
+            for (Order order : state.orders) {
+                if (order.hasArrived(state.date)) {
+                    order.receive(state.db, ui);
                 }
             }
         }
         else
             ui.log("Set time operation canceled by user.");
     }
+    public static void changePassword() {
+        PasswordUI dialog = new PasswordUI("", true);
+        if (!dialog.password.equals("")) {
+            state.password = dialog.password;
+            ui.log("Password was changed by user.");
+        }
+        else
+            ui.log("Password change operation was canceled by user.");
+    }
 
-    // generalized encrypt and decrypt methods
+    // generalized encrypt and decrypt methods UNFINISHED
     public static void encrypt(String filepath) {
 
     }

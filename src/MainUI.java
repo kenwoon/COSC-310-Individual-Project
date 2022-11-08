@@ -11,12 +11,14 @@ public class MainUI extends JFrame implements ActionListener {
     JLabel revenueLabel;
     JTable dataTable;
     JTextArea consoleOutput;
+    ProgramState state;
 
-    public MainUI(Database db) {   // constructor
+    public MainUI(ProgramState _state) {   // constructor
+        state = _state;
         // get all products in String[] objects
-        String[][] rows = new String[db.products.size()][6];
-        for (int i = 0; i < db.products.size(); i++)
-            rows[i] = db.products.get(i).toStringArray();
+        String[][] rows = new String[state.db.products.size()][6];
+        for (int i = 0; i < state.db.products.size(); i++)
+            rows[i] = state.db.products.get(i).toStringArray();
 
         // set up our main components, mainly dataTable
         root = new JPanel();
@@ -33,14 +35,15 @@ public class MainUI extends JFrame implements ActionListener {
 
         // set up our main admin buttons and the sub layout for them
         JPanel mainButtonPanel = new JPanel();
-        mainButtonPanel.setLayout(new GridLayout(6, 1, 0, 5));
+        mainButtonPanel.setLayout(new GridLayout(7, 1, 0, 5));
         mainButtonPanel.add(new JLabel("Tools", JLabel.CENTER));
         for (JButton button : new JButton[] {
                 new JButton("Load"),
                 new JButton("Save"),
                 new JButton("Add"),
                 new JButton("Edit"),
-                new JButton("Order") }) {
+                new JButton("Order"),
+                new JButton("Change Password") }) {
             button.setActionCommand(button.getText().toLowerCase());
             button.addActionListener(this);
             mainButtonPanel.add(button);
@@ -70,11 +73,18 @@ public class MainUI extends JFrame implements ActionListener {
 
         // frame parameter boilerplate code
         this.add(root);    // add the main root panel to the frame
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {    // when user wants to close, do this instead
+            public void windowClosing(WindowEvent e) {
+                // save current table/db contents to the csv then save current state
+                Database.saveCSV(state.db.filepath, state.db.products);
+                state.save();
+                e.getWindow().dispose();    // now close the frame
+            }
+        });
         this.setResizable(false);
         this.setTitle("Team 5: Inventory System");
         this.pack();
-        //this.setSize(500, 300);
         this.setLocation(750, 300);
         this.setVisible(true);     // actually show the window
     }
@@ -97,6 +107,8 @@ public class MainUI extends JFrame implements ActionListener {
                 InventorySystemMain.transaction(); break;
             case "set time":
                 InventorySystemMain.setTime(); break;
+            case "change password":
+                InventorySystemMain.changePassword(); break;
             default:
                 log("Unknown command: " + command); break;
         }
