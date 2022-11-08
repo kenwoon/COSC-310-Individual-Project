@@ -2,8 +2,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.io.*;
-import java.time.*;
-import java.util.*;
+import org.jasypt.util.text.*;
 
 public class InventorySystemMain {
     static MainUI ui;
@@ -18,6 +17,7 @@ public class InventorySystemMain {
             return;
         
         ui = new MainUI(state);
+        ui.updateRevenue(state.revenue);
         ui.log("Loaded: " + state.db.filepath);
         
         // set up our JFileChooser for loading and saving CSVs
@@ -149,11 +149,40 @@ public class InventorySystemMain {
             ui.log("Password change operation was canceled by user.");
     }
 
-    // generalized encrypt and decrypt methods UNFINISHED
+    // generalized encrypt and decrypt methods utilizing the open source library found here:
+    // https://github.com/jasypt/jasypt
     public static void encrypt(String filepath) {
+        try {
+            File file = new File(filepath);
+            AES256TextEncryptor encryptor = new AES256TextEncryptor();
+            encryptor.setPassword(Integer.toString(file.getAbsolutePath().length()));   // init password to length of path so it's different for each file we encrypt
 
+            String text = "";
+            try (BufferedReader stream = new BufferedReader(new FileReader(file))) {   // read in text from file
+                String current = "";
+                while ((current = stream.readLine()) != null)
+                    text += "\n" + current;
+            }
+            text = encryptor.encrypt(text.substring(1, text.length()));      // remove opening '\n' and encrypt
+            try (BufferedWriter stream = new BufferedWriter(new FileWriter(file))) {       // write encrypted text to file
+                stream.write(text);
+            }
+        } catch (Exception ex) { ex.printStackTrace(); }    // catch IO exceptions
     }
     public static void decrypt(String filepath) {
+        try {
+            File file = new File(filepath);
+            AES256TextEncryptor encryptor = new AES256TextEncryptor();
+            encryptor.setPassword(Integer.toString(file.getAbsolutePath().length()));   // password = length of filepath
 
+            String text = "";
+            try (BufferedReader stream = new BufferedReader(new FileReader(file))) {   // read in text from file
+                text = stream.readLine();
+            }
+            text = encryptor.decrypt(text);      // decrypt text
+            try (BufferedWriter stream = new BufferedWriter(new FileWriter(file))) {       // write decrypted text to file
+                stream.write(text);
+            }
+        } catch (Exception ex) { ex.printStackTrace(); }    // catch IO exceptions
     }
 }

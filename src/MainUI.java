@@ -115,7 +115,7 @@ public class MainUI extends JFrame implements ActionListener {
     }
 
     public void log(String msg) {   // method to print any error messages/user messages with a timestamp to the consoleOutput
-        consoleOutput.setText(consoleOutput.getText() + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss.S")) + " : " + msg + "\n");
+        consoleOutput.setText(consoleOutput.getText() + state.date.toString() + "_" + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss.S")) + " : " + msg + "\n");
     }
 
     public void resizeColumns() {

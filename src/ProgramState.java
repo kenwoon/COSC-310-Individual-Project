@@ -2,7 +2,6 @@ import java.io.*;
 import java.time.*;
 import java.util.*;
 
-// https://stackoverflow.com/questions/5632658/how-to-encrypt-or-decrypt-a-file-in-java
 public class ProgramState {
     public String path;
     public LocalDate date;
@@ -29,7 +28,6 @@ public class ProgramState {
             revenue = 0;
             password = "password";
         }
-
     }
     
     public void save() {

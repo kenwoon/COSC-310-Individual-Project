@@ -1,6 +1,6 @@
 id,name,currentStock,sellPrice,buyPrice,shipTimeDays
-1,pencil,50,2.99,0.3,6
-2,pen,50,3.99,0.4,2
+1,pencil,52,2.99,0.3,6
+2,pen,51,3.99,0.4,2
 3,eraser,50,1.99,0.2,4
 4,laptop,15,499.99,50.0,14
 5,workbook,35,9.99,1.0,7
