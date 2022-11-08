@@ -145,4 +145,12 @@ public class InventorySystemMain {
         else
             ui.log("Set time operation canceled by user.");
     }
+
+    // generalized encrypt and decrypt methods
+    public static void encrypt(String filepath) {
+
+    }
+    public static void decrypt(String filepath) {
+
+    }
 }
