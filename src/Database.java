@@ -24,6 +24,10 @@ public class Database
         this.products = loadCSV(filename);
         this.filepath = filename;
     }
+    public Database() {
+        this.products = new ArrayList<Product>();
+        this.filepath = "";
+    }
 
     public static void main(String[] args)
     {
