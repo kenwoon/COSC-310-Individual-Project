@@ -8,19 +8,30 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.Statement;
+import java.util.Properties;
 
 public class Database
 {
     List<Product> products;
     String filepath;
+
     public Database(String filename) {
         this.products = loadCSV(filename);
         this.filepath = filename;
     }
+
     public static void main(String[] args)
     {
         // // Load CSV file
         // List<Product> products = loadCSV("dummy_data.csv");
+
+        // // Load table from DB
+        // List<Product> products = loadDB("dummy_data");
         
         // // Print products list
         // for (Product p : products)
@@ -31,6 +42,9 @@ public class Database
         // // Testing to see if saveCSV works
         // saveCSV("Test.csv", products);
 
+        // // Testing to see if saveDB works
+        // saveDB("dummy_data", products);
+
         // // Testing to see if getProduct methods work
         // List<Product> searchList = getProductByStock(50, products);
         // for (Product p1 : searchList)
@@ -38,8 +52,6 @@ public class Database
         //     System.out.println(p1);
         // }
     }
-
-
 
     public static List<Product> loadCSV(String filename)
     {
@@ -89,13 +101,99 @@ public class Database
             e.printStackTrace();
         }
     }
+
+    public static List<Product> loadDB(String tablename)
+    {
+        List<Product> products = new ArrayList<>();
+        Connection c = null;
+        String bitApiKey = "v2_3vYHA_YPMN8xMDw7zX6xFYeLN3qLH";
+        String bitDB = "kenwoon.Inventory";
+        String bitUser = "kenwoon";
+        String bitHost = "db.bit.io";
+        String bitPort = "5432";
+
+        Properties props = new Properties();
+        props.setProperty("sslmode", "require");
+        props.setProperty("user", bitUser);
+        props.setProperty("password", bitApiKey);
+
+        try
+        {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection("jdbc:postgresql://" + bitHost + ":" + bitPort + "/" + bitDB, props);
+            Statement stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT id, name, currentstock, sellprice, buyprice, shiptimedays FROM \"" + tablename + "\"");
+
+            while (rs.next()) {
+                ResultSetMetaData rsmd = rs.getMetaData(); // The ResultSet .getXXX() methods expect the column index to start at 1.
+                String[] attributes = new String[6];
+
+                for (int i = 1; i <= rsmd.getColumnCount(); i++)
+                    attributes[i - 1] = rs.getString(i);
+
+                Product product = createProduct(attributes);
+                products.add(product);
+            }
+        }
+        
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+
+        return products;
+    }
+
+    public static void saveDB(String tablename, List<Product> products)
+    {
+        Connection c = null;
+        String bitApiKey = "v2_3vYHA_YPMN8xMDw7zX6xFYeLN3qLH";
+        String bitDB = "kenwoon.Inventory";
+        String bitUser = "kenwoon";
+        String bitHost = "db.bit.io";
+        String bitPort = "5432";
+
+        Properties props = new Properties();
+        props.setProperty("sslmode", "require");
+        props.setProperty("user", bitUser);
+        props.setProperty("password", bitApiKey);
+
+        try
+        {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection("jdbc:postgresql://" + bitHost + ":" + bitPort + "/" + bitDB, props);
+            String query;
+            Statement stmt = c.createStatement();
+
+            stmt.addBatch("TRUNCATE TABLE \"" + tablename + "\"");
+
+            for (Product p : products)
+            {
+                query = String.format("INSERT INTO \"%s\" VALUES (%d, \'%s\', %d, %f, %f, %d)", tablename, p.getId(), p.getName(), p.getCurrentStock(), p.getSellPrice(), p.getBuyPrice(), p.getShipTimeDays());
+                stmt.addBatch(query);
+            }
+
+            stmt.executeBatch();
+        }
+        
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
     
     public void addProduct(Product p) {
         products.add(p);
     }
+
     public void removeProduct(Product p) {
         products.remove(p);
     }
+
     @Override
     public String toString() {
         String out = "";
@@ -103,6 +201,7 @@ public class Database
             out += i.toString() + "\n";
         return out;
     }
+
     private static Product createProduct(String[] metadata)
     {
         int id = Integer.parseInt(metadata[0]);
@@ -131,7 +230,6 @@ public class Database
     public static Product[] getProductsAsArray(List<Product> products){
         return (Product[]) products.stream().toArray();
     }
-
     
     private static List<Product> getProductByName(String name, List<Product> products)
     {
