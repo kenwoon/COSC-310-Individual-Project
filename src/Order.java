@@ -31,4 +31,9 @@ public class Order {
             isActive = false;
         }
     }
+
+    @Override
+    public String toString() {
+        return String.format("Order is for %d of product '%s' and was placed on %s.", quantity, product.getName(), date.toString());
+    }
 }

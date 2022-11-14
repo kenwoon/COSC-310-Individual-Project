@@ -96,7 +96,13 @@ public class Database
     public void removeProduct(Product p) {
         products.remove(p);
     }
-    
+    @Override
+    public String toString() {
+        String out = "";
+        for (Product i : products)
+            out += i.toString() + "\n";
+        return out;
+    }
     private static Product createProduct(String[] metadata)
     {
         int id = Integer.parseInt(metadata[0]);
