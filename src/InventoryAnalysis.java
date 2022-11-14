@@ -50,10 +50,10 @@
      public static void CheckStock(List<Product> products, MainUI ui){
          for (Product each:products
          ) {
-            if (each.getCurrentStock()<30)
-                ui.log(String.format("Consider ordering more stock for %s, stock is < 50.", each.getName()));
-            else if (each.getCurrentStock()<5)
+            if (each.getCurrentStock()<5)
                 ui.log(String.format("Inventory very low (< 5), you should order more stock for %s.", each.getName()));
+            else if (each.getCurrentStock()<30)
+                ui.log(String.format("Consider ordering more stock for %s, stock is < 30.", each.getName()));
          }
      }
 
