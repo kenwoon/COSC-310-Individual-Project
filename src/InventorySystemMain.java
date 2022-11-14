@@ -149,6 +149,15 @@ public class InventorySystemMain {
         else
             ui.log("Password change operation was canceled by user.");
     }
+    public static void cloudLoad() {
+        state.db.products = Database.loadDB("dummy_data");
+        ui.updateRows(state.db);
+        ui.log("Successfully loaded data from the cloud.");
+    }
+    public static void cloudSave() {
+        Database.saveDB("dummy_data", state.db.products);
+        ui.log("Successfully backed up to the cloud.");
+    }
 
     // generalized encrypt and decrypt methods utilizing the open source library found here:
     // https://github.com/jasypt/jasypt

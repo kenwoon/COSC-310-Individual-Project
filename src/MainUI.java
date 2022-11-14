@@ -35,7 +35,7 @@ public class MainUI extends JFrame implements ActionListener {
 
         // set up our main admin buttons and the sub layout for them
         JPanel mainButtonPanel = new JPanel();
-        mainButtonPanel.setLayout(new GridLayout(7, 1, 0, 5));
+        mainButtonPanel.setLayout(new GridLayout(9, 1, 0, 5));
         mainButtonPanel.add(new JLabel("Tools", JLabel.CENTER));
         for (JButton button : new JButton[] {
                 new JButton("Load"),
@@ -43,7 +43,9 @@ public class MainUI extends JFrame implements ActionListener {
                 new JButton("Add"),
                 new JButton("Edit"),
                 new JButton("Order"),
-                new JButton("Change Password") }) {
+                new JButton("Change Password"),
+                new JButton("Cloud Load"),
+                new JButton("Cloud Save") }) {
             button.setActionCommand(button.getText().toLowerCase());
             button.addActionListener(this);
             mainButtonPanel.add(button);
@@ -109,6 +111,10 @@ public class MainUI extends JFrame implements ActionListener {
                 InventorySystemMain.setTime(); break;
             case "change password":
                 InventorySystemMain.changePassword(); break;
+            case "cloud load":
+                InventorySystemMain.cloudLoad(); break;
+            case "cloud save":
+                InventorySystemMain.cloudSave(); break;
             default:
                 log("Unknown command: " + command); break;
         }
