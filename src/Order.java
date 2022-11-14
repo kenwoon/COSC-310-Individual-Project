@@ -1,12 +1,12 @@
 import java.time.*;
 
-public class Order extends {
+public class Order {
     Product product;
     int quantity;
     LocalDate date;
     boolean isActive;
     public Order(Product _product, int _quantity, LocalDate _date) {
-        this._product = _product;
+        this.product = _product;
         this.quantity = _quantity;
         this.date = _date;
         this.isActive = true;

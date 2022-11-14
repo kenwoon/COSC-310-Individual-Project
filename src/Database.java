@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Database
 {
-    static List<Product> products;
+    List<Product> products;
     String filepath;
     public Database(String filename) {
         this.products = loadCSV(filename);

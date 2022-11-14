@@ -1,6 +1,3 @@
- import com.opencsv.CSVReader;
- import com.opencsv.CSVReaderBuilder;
-
  import java.io.FileReader;
  import java.io.FileWriter;
  import java.io.IOException;
@@ -50,29 +47,31 @@
          return temp;
      }
 
-     public static void CheckStock(){
-         for (Product each:Database.products
+     public static void CheckStock(List<Product> products, MainUI ui){
+         for (Product each:products
          ) {
-            if (each.getCurrentStock()<50) System.out.println("Order more stock");
-            if (each.getCurrentStock()<5) System.out.println("Out of Stock");
+            if (each.getCurrentStock()<30)
+                ui.log(String.format("Consider ordering more stock for %s, stock is < 50.", each.getName()));
+            else if (each.getCurrentStock()<5)
+                ui.log(String.format("Inventory very low (< 5), you should order more stock for %s.", each.getName()));
          }
      }
 
-     public static void CheckDuplicates(){
-         for (int i = 0; i < Database.products.size(); i++) {
-             for (int j = 0; j < Database.products.size(); j++) {
+     public static void CheckDuplicates(List<Product> products){
+         for (int i = 0; i < products.size(); i++) {
+             for (int j = 0; j < products.size(); j++) {
                  if (i == j) continue;
-                 if (Database.products.get(i).getName().equals(Database.products.get(j))){
-                     System.out.printf("There is a duplicate product with the name : %s \t with id : %d",Database.products.get(i).getName(),Database.products.get(i).getId());
+                 if (products.get(i).getName().equals(products.get(j))){
+                     System.out.printf("There is a duplicate product with the name : %s \t with id : %d",products.get(i).getName(),products.get(i).getId());
                  }
              }
          }
      }
 
-     public static void totalInventoryCost(){
+     public static void totalInventoryCost(List<Product> products){
          double total_selling = 0.0;
          double total_buying = 0.0;
-         for (Product each: Database.products
+         for (Product each: products
               ) {
              total_selling+= each.getCurrentStock()*each.getSellPrice();
              total_buying+= each.getCurrentStock()*each.getBuyPrice();

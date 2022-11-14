@@ -119,6 +119,7 @@ public class InventorySystemMain {
             ui.updateRows(state.db);
             ui.updateRevenue(state.revenue);
             ui.log("Customer transaction occurred.");
+            InventoryAnalysis.CheckStock(state.db.products, ui);
         }
         else
             ui.log("Transaction canceled by user.");
