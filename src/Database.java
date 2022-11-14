@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Database
 {
-    List<Product> products;
+    static List<Product> products;
     String filepath;
     public Database(String filename) {
         this.products = loadCSV(filename);
@@ -38,6 +38,8 @@ public class Database
         //     System.out.println(p1);
         // }
     }
+
+
 
     public static List<Product> loadCSV(String filename)
     {
@@ -119,6 +121,11 @@ public class Database
     
         return searchList;
     }
+
+    public static Product[] getProductsAsArray(List<Product> products){
+        return (Product[]) products.stream().toArray();
+    }
+
     
     private static List<Product> getProductByName(String name, List<Product> products)
     {
