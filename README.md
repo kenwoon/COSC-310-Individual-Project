@@ -21,4 +21,15 @@ This is the public repository team 5 will be using to collaborate on the project
  - **InventorySystemTest:** this class contains the 3 main tests and are described in more detail in the test documentation pdf.
  - **Database:** this class communicates with the UI and handles the backend functions of the inventory system. The class takes a csv file stored locally on the computer and accesses the data stored. The method available allows for adding products, removing products, editing products information, and searching for products via each attribute values.
 
-- **Inventory Analysis:** This class provides the necessary methods for analysis of the inventory. Methods to check if the Stock available is below 10 so that it pops a message to the manager to re-stock and methods to change delivery time depending upon the delays. Currently the class contains methods such as add, edit, save, load, remove which are used in database class in order to have a functional system. The analysis methods will be updated in assignment 3.
+ - **Inventory Analysis:** This class provides the necessary methods for analysis of the inventory. Methods to check if the Stock available is below 10 so that it pops a message to the manager to re-stock and methods to change delivery time depending upon the delays. Currently the class contains methods such as add, edit, save, load, remove which are used in database class in order to have a functional system. The analysis methods will be updated in assignment 3.
+
+### New features (5) implemented in A3:
+ - Ability to change password for increased security (Paul)
+ - InventorySystem now saves its state automatically so you can pick up right where you left off (Paul)
+ - Savestates are encrypted, ensuring no sensitive data (including the password) is stored in plain text for increased security (Paul)
+ - Cloud backup the database to an external server for if multiple users are using the inventory system or if you need to access the database remotely (Ken)
+ - Inventory analysis that reminds the user to buy more stock if any stock falls beneath a threshold (Saksham)
+
+### Open-source libraries used:
+ - [jasypt](https://github.com/jasypt/jasypt) for encryption and decryption
+ - [postgresql](https://jdbc.postgresql.org/) for cloud backup and remote SQL
