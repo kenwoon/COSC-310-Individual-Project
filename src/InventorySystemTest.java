@@ -1,14 +1,12 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Before;
 import org.junit.Test;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -30,6 +28,7 @@ public class InventorySystemTest {
 
         Database testdb = new Database(testpath);   // init a new database from that file
         assertEquals(db.toString(), testdb.toString()); // check if all products are identical (Database has an overrided toString method)
+        assertEquals(db.products.size(), 2);    // checks if the removeProduct method worked
     }
 
     @Test
