@@ -182,7 +182,7 @@ public class InventorySystemMain
 
     public static void history()
     {
-        Graph.CreateGraph();
+        Graph.CreateGraph(state.tran);
         ui.log("Created transaction history graph.");
     }
 

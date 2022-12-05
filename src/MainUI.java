@@ -94,6 +94,7 @@ public class MainUI extends JFrame implements ActionListener
             {
                 // save current table/db contents to the csv then save current state
                 Database.saveCSV(state.db.filepath, state.db.products);
+                TransactionHistory.saveCSV(state.tran.filepath, state.tran.transactions);
                 state.save();
                 e.getWindow().dispose();    // now close the frame
             }
