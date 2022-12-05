@@ -1,6 +1,12 @@
 {
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "/Users/Kensuke/Downloads/JCommunique-2.0.0.jar"
+        "/Users/Kensuke/Downloads/JCommunique-2.0.0.jar",
+        "/Users/Kensuke/Downloads/matplotlib4j-0.5.0.jar",
+        "/Users/Kensuke/Downloads/guava-31.1-jre.jar",
+        "/Users/Kensuke/Downloads/slf4j-reload4j-2.0.5.jar",
+        "/Users/Kensuke/Downloads/slf4j-reload4j-2.0.5-sources.jar",
+        "/Users/Kensuke/Downloads/slf4j-reload4j-2.0.5-javadoc.jar",
+        "/Users/Kensuke/Downloads/slf4j-api-2.0.5.jar"
     ]
 }

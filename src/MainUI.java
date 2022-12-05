@@ -63,7 +63,10 @@ public class MainUI extends JFrame implements ActionListener
         for (JButton button : new JButton[]
         {
             new JButton("Transaction"),
-            new JButton("Set Time")
+            new JButton("Set Time"),
+            new JButton("History"),
+            new JButton("Load History"),
+            new JButton("Save History")
         })
         {
             button.setActionCommand(button.getText().toLowerCase());
@@ -123,6 +126,12 @@ public class MainUI extends JFrame implements ActionListener
                 InventorySystemMain.transaction(); break;
             case "set time":
                 InventorySystemMain.setTime(); break;
+            case "history":
+                InventorySystemMain.history(); break;
+            case "load history":
+                InventorySystemMain.loadHistory(); break;
+            case "save history":
+                InventorySystemMain.saveHistory(); break;
             case "change password":
                 InventorySystemMain.changePassword(); break;
             case "cloud load":

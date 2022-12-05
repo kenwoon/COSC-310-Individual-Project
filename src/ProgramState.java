@@ -10,6 +10,7 @@ public class ProgramState
     public List<Order> orders;
     public double revenue;
     public String password;
+    public TransactionHistory tran;
 
     public ProgramState()
     {
@@ -18,7 +19,8 @@ public class ProgramState
          * c:\path\to\the\csv   // filepath to db instance's csv
          * 1234.56              // revenue double
          * supersecretpassword  // password
-         * 1,12,2022-11-06      // ordered 12 products of id=1 on nov 6th 2022 */
+         * 1,12,2022-11-06      // ordered 12 products of id=1 on nov 6th 2022 
+         * c:\path\to\the\csv   // filepath to tran instance's csv */
         
         path = "InventorySystem.state";
         if (new File(path).exists())
@@ -31,6 +33,7 @@ public class ProgramState
             orders = new ArrayList<Order>();
             revenue = 0;
             password = "password";
+            tran = new TransactionHistory("dummy_transactions.csv");
         }
     }
     
@@ -44,10 +47,10 @@ public class ProgramState
             stream.write("\n" + db.filepath);    // save filepath of the db's csv
             stream.write("\n" + revenue);       // save revenue
             stream.write("\n" + password);           // save password in plaintext, it will be encrypted later
+            stream.write("\n" + tran.filepath);     // save filepath of the tran's csv
             for (Order i : orders)                      // save a line for each active order
                 if (i.isActive)     // if an order isn't active (ie has been received) we don't need to save it
                     stream.write(String.format("\n%d,%d,%s", i.product.getId(), i.quantity, i.date.toString()));
-        
             stream.close();     // close the stream
         } catch (IOException ex) { ex.printStackTrace(); }
 
@@ -68,6 +71,7 @@ public class ProgramState
             db = new Database(stream.readLine());
             revenue = Double.parseDouble(stream.readLine());
             password = stream.readLine();
+            tran = new TransactionHistory(stream.readLine());
     
             orders = new ArrayList<Order>();
             String current;

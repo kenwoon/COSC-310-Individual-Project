@@ -79,7 +79,8 @@ class Product
 
     public String[] toStringArray ()
     {
-        return new String[] {
+        return new String[]
+        {
             String.format("%d", id),
             name,
             String.format("%d", currentStock),

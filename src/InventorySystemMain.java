@@ -20,7 +20,7 @@ public class InventorySystemMain
         
         ui = new MainUI(state);
         ui.updateRevenue(state.revenue);
-        ui.log("Loaded: " + state.db.filepath);
+        ui.log("Loaded: " + state.db.filepath + " and " + state.tran.filepath);
         
         // set up our JFileChooser for loading and saving CSVs
         fileDialog = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
@@ -138,7 +138,7 @@ public class InventorySystemMain
 
     public static void transaction()
     {
-        TransactionUI dialog = new TransactionUI(ui.dataTable, "Fake a Transaction");
+        TransactionUI dialog = new TransactionUI(ui.dataTable, "Make a Transaction");
         if (dialog.products != null)
         {
             for (int id : dialog.products.keySet())
@@ -150,6 +150,8 @@ public class InventorySystemMain
                     Product p = Database.getProductById(id, state.db.products).get(0);
                     state.revenue += p.getSellPrice() * quantity;
                     p.setCurrentStock(p.getCurrentStock() - quantity);
+                    Transaction t = new Transaction(state.date.toString(), p.getName(), quantity);
+                    state.tran.addTransaction(t);
                 }
             }
             ui.updateRows(state.db);
@@ -176,6 +178,34 @@ public class InventorySystemMain
         }
         else
             ui.log("Set time operation canceled by user.");
+    }
+
+    public static void history()
+    {
+        Graph.CreateGraph();
+        ui.log("Created transaction history graph.");
+    }
+
+    public static void loadHistory()
+    {
+        if (fileDialog.showOpenDialog(ui) == JFileChooser.APPROVE_OPTION)
+        {
+            String path = fileDialog.getSelectedFile().getAbsolutePath();
+            state.tran.filepath = path;
+            state.tran.transactions = TransactionHistory.loadCSV(path);
+            ui.log("Loaded: " + path);
+        }
+    }
+
+    public static void saveHistory()
+    {
+        if (fileDialog.showSaveDialog(ui) == JFileChooser.APPROVE_OPTION)
+        {
+            String path = fileDialog.getSelectedFile().getAbsolutePath();
+            path = path.endsWith(".csv") ? path : path + ".csv";
+            TransactionHistory.saveCSV(path, state.tran.transactions);
+            ui.log("Saved transaction history to: " + path);
+        }
     }
 
     public static void changePassword()

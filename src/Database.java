@@ -197,6 +197,11 @@ public class Database
         
         return new Product(id, name, currentStock, sellPrice, buyPrice, shipTimeDays);
     }
+
+    public static Product[] getProductsAsArray(List<Product> products)
+    {
+        return (Product[]) products.stream().toArray();
+    }
     
     public static List<Product> getProductById(int id, List<Product> products)
     {
@@ -209,11 +214,6 @@ public class Database
         }
     
         return searchList;
-    }
-
-    public static Product[] getProductsAsArray(List<Product> products)
-    {
-        return (Product[]) products.stream().toArray();
     }
     
     private static List<Product> getProductByName(String name, List<Product> products)
