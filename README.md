@@ -47,10 +47,6 @@ This is the individual repository, building off from the public [repository](htt
 
     This class contains most runtime variables and as such constitutes the entire running state of the inventory system. This class contains save and load methods for securely saving and loading the program state to 'InventorySystem.state'.
 
-- ### **InventorySystemTest:**
-
-    This class contains the 3 main tests and are described in more detail in the test documentation pdf.
-
 - ### **Database:**
 
     This class communicates with the UI and handles the backend functions of the inventory system. The class takes a csv file stored locally on the computer and accesses the data stored. With the new implementations, this class is now able to also take a dataset stored in the cloud and load it into the inventory system. The edited result can also be backed up to the cloud. The method available allows for adding products, removing products, editing products information, and searching for products via each attribute values.
