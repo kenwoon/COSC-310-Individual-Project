@@ -1,4 +1,4 @@
-# COSC 310 Team 5 Project
+# COSC 310 Individual Project
 
 This is the individual repository, building off from the public [repository](https://github.com/COSC-310-T5/Project) that team 5 of COSC 310 has been using to collaborate on the project throughout the semester in The University of British Columbia Okanagan.
 
