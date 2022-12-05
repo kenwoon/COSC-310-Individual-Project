@@ -55,7 +55,7 @@ This is the individual repository, building off from the public [repository](htt
 
     This class provides the necessary methods for analysis of the inventory. Method CheckStock pops message when stock is below 30 and an urgent message for inventory below 5. CheckDuplicates is to check for duplicate products by name and notify in order to have an efficient inventory database. Total inventory cost calculates the total selling as well as total buying cost. It can be used to calculate profits and also the inventory asset of the company.
 
-- **Notification:**
+- ### **Notification:**
 
     This class creates an instance of a system pop-up message whenever it is called from the Inventory Analysis class. The window, texts, and button created are placed to their assigned positions with the appropriate visual theme. The constructor class creates the notification based on the parameters passed through from the Inventory Analysis class. The 3 object argument (which are strings) passed should be in a specific order which is the title, message, and color for the title of the notification. These methods utilize this open-source library: [JCommunique](https://github.com/spfrommer/JCommunique)
 
