@@ -2,7 +2,8 @@ import java.io.*;
 import java.time.*;
 import java.util.*;
 
-public class ProgramState {
+public class ProgramState
+{
     public String path;
     public LocalDate date;
     public Database db;
@@ -10,7 +11,8 @@ public class ProgramState {
     public double revenue;
     public String password;
 
-    public ProgramState() {
+    public ProgramState()
+    {
         /* InventorySystem.state layout/format:
          * yyyy-mm-dd           // date
          * c:\path\to\the\csv   // filepath to db instance's csv
@@ -21,7 +23,9 @@ public class ProgramState {
         path = "InventorySystem.state";
         if (new File(path).exists())
             load();
-        else {  // no state found, must be first run. so, load basic defaults
+        else
+        {  
+            // no state found, must be first run. so, load basic defaults
             date = LocalDate.now();
             db = new Database("dummy_data.csv");    // load in default dummy data
             orders = new ArrayList<Order>();
@@ -30,9 +34,11 @@ public class ProgramState {
         }
     }
     
-    public void save() {
+    public void save()
+    {
         // save current state to the file
-        try {
+        try
+        {
             BufferedWriter stream = new BufferedWriter(new FileWriter(path));
             stream.write(date.toString());    // save date
             stream.write("\n" + db.filepath);    // save filepath of the db's csv
@@ -49,12 +55,14 @@ public class ProgramState {
         InventorySystemMain.encrypt(path);
     }
 
-    public void load() {
+    public void load()
+    {
         // ADD CALLS TO DECRYPT THE FILE HERE
         InventorySystemMain.decrypt(path);
 
         // read in the state to this instance
-        try {
+        try
+        {
             BufferedReader stream = new BufferedReader(new FileReader(path));
             date = LocalDate.parse(stream.readLine());
             db = new Database(stream.readLine());
@@ -63,7 +71,9 @@ public class ProgramState {
     
             orders = new ArrayList<Order>();
             String current;
-            while ((current = stream.readLine()) != null) {     // read in a line for each order
+            while ((current = stream.readLine()) != null)
+            {     
+                // read in a line for each order
                 String[] args = current.split(",");     // split the line on commas
                 orders.add(new Order(Database.getProductById(Integer.parseInt(args[0]), db.products).get(0), Integer.parseInt(args[1]), LocalDate.parse(args[2])));
             }

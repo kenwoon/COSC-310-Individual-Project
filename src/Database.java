@@ -20,42 +20,19 @@ public class Database
     List<Product> products;
     String filepath;
 
-    public Database(String filename) {
+    public Database(String filename)
+    {
         this.products = loadCSV(filename);
         this.filepath = filename;
     }
-    public Database() {
+
+    public Database()
+    {
         this.products = new ArrayList<Product>();
         this.filepath = "";
     }
 
-    public static void main(String[] args)
-    {
-        // // Load CSV file
-        // List<Product> products = loadCSV("dummy_data.csv");
-
-        // // Load table from DB
-        // List<Product> products = loadDB("dummy_data");
-        
-        // // Print products list
-        // for (Product p : products)
-        // {
-        //     System.out.println(p);
-        // }
-
-        // // Testing to see if saveCSV works
-        // saveCSV("Test.csv", products);
-
-        // // Testing to see if saveDB works
-        // saveDB("dummy_data", products);
-
-        // // Testing to see if getProduct methods work
-        // List<Product> searchList = getProductByStock(50, products);
-        // for (Product p1 : searchList)
-        // {
-        //     System.out.println(p1);
-        // }
-    }
+    public static void main(String[] args) {}
 
     public static List<Product> loadCSV(String filename)
     {
@@ -190,16 +167,19 @@ public class Database
         }
     }
     
-    public void addProduct(Product p) {
+    public void addProduct(Product p)
+    {
         products.add(p);
     }
 
-    public void removeProduct(Product p) {
+    public void removeProduct(Product p)
+    {
         products.remove(p);
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         String out = "";
         for (Product i : products)
             out += i.toString() + "\n";
@@ -231,7 +211,8 @@ public class Database
         return searchList;
     }
 
-    public static Product[] getProductsAsArray(List<Product> products){
+    public static Product[] getProductsAsArray(List<Product> products)
+    {
         return (Product[]) products.stream().toArray();
     }
     

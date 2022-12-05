@@ -6,14 +6,16 @@ import java.awt.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
-public class MainUI extends JFrame implements ActionListener {
+public class MainUI extends JFrame implements ActionListener
+{
     JPanel root;
     JLabel revenueLabel;
     JTable dataTable;
     JTextArea consoleOutput;
     ProgramState state;
 
-    public MainUI(ProgramState _state) {   // constructor
+    public MainUI(ProgramState _state)
+    {   // constructor
         state = _state;
         // get all products in String[] objects
         String[][] rows = new String[state.db.products.size()][6];
@@ -37,15 +39,18 @@ public class MainUI extends JFrame implements ActionListener {
         JPanel mainButtonPanel = new JPanel();
         mainButtonPanel.setLayout(new GridLayout(9, 1, 0, 5));
         mainButtonPanel.add(new JLabel("Tools", JLabel.CENTER));
-        for (JButton button : new JButton[] {
-                new JButton("Load"),
-                new JButton("Save"),
-                new JButton("Add"),
-                new JButton("Edit"),
-                new JButton("Order"),
-                new JButton("Change Password"),
-                new JButton("Cloud Load"),
-                new JButton("Cloud Save") }) {
+        for (JButton button : new JButton[]
+        {
+            new JButton("Load"),
+            new JButton("Save"),
+            new JButton("Add"),
+            new JButton("Edit"),
+            new JButton("Order"),
+            new JButton("Change Password"),
+            new JButton("Cloud Load"),
+            new JButton("Cloud Save")
+        })
+        {
             button.setActionCommand(button.getText().toLowerCase());
             button.addActionListener(this);
             mainButtonPanel.add(button);
@@ -55,9 +60,12 @@ public class MainUI extends JFrame implements ActionListener {
         JPanel devButtonPanel = new JPanel();
         devButtonPanel.setLayout(new GridLayout(3, 1, 0, 5));
         devButtonPanel.add(new JLabel("Dev Tools", JLabel.CENTER));
-        for (JButton button : new JButton[] {
-                new JButton("Transaction"),
-                new JButton("Set Time") }) {
+        for (JButton button : new JButton[]
+        {
+            new JButton("Transaction"),
+            new JButton("Set Time")
+        })
+        {
             button.setActionCommand(button.getText().toLowerCase());
             button.addActionListener(this);
             devButtonPanel.add(button);
@@ -76,8 +84,11 @@ public class MainUI extends JFrame implements ActionListener {
         // frame parameter boilerplate code
         this.add(root);    // add the main root panel to the frame
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        this.addWindowListener(new WindowAdapter() {    // when user wants to close, do this instead
-            public void windowClosing(WindowEvent e) {
+        this.addWindowListener(new WindowAdapter()
+        {    
+            // when user wants to close, do this instead
+            public void windowClosing(WindowEvent e)
+            {
                 // save current table/db contents to the csv then save current state
                 Database.saveCSV(state.db.filepath, state.db.products);
                 state.save();
@@ -92,9 +103,12 @@ public class MainUI extends JFrame implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {    // this is a listener method that waits for any GUI event to occur and runs the corresponding method for each event
+    public void actionPerformed(ActionEvent e)
+    {   
+        // this is a listener method that waits for any GUI event to occur and runs the corresponding method for each event
         String command = e.getActionCommand();
-        switch (command) {
+        switch (command)
+        {
             case "load":
                 InventorySystemMain.load(); break;
             case "save":
@@ -120,11 +134,14 @@ public class MainUI extends JFrame implements ActionListener {
         }
     }
 
-    public void log(String msg) {   // method to print any error messages/user messages with a timestamp to the consoleOutput
+    public void log(String msg)
+    {   
+        // method to print any error messages/user messages with a timestamp to the consoleOutput
         consoleOutput.setText(consoleOutput.getText() + state.date.toString() + "_" + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss.S")) + " : " + msg + "\n");
     }
 
-    public void resizeColumns() {
+    public void resizeColumns()
+    {
         dataTable.getColumnModel().getColumn(0).setPreferredWidth(25);
         dataTable.getColumnModel().getColumn(1).setPreferredWidth(150);
         dataTable.getColumnModel().getColumn(2).setPreferredWidth(100);
@@ -133,7 +150,8 @@ public class MainUI extends JFrame implements ActionListener {
         dataTable.getColumnModel().getColumn(5).setPreferredWidth(200);
     }
 
-    public void updateRows(Database db) {
+    public void updateRows(Database db)
+    {
         // set up our new data model with the new db
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(new String[] {"id", "name", "stock", "sellPrice", "buyPrice", "shipTimeDays"});
@@ -145,7 +163,9 @@ public class MainUI extends JFrame implements ActionListener {
         resizeColumns();        // resize the data columns to be more aesthetic
     }
 
-    public int getSelectedRow() {    // returns the 'id' value of the selected row's product or null if no row is selected
+    public int getSelectedRow()
+    {    
+        // returns the 'id' value of the selected row's product or null if no row is selected
         int index = dataTable.getSelectedRow(); // returns 0-based index of currently selected row, will return -1 if no row is selected
         if (index < 0)
             return -1;
@@ -153,7 +173,8 @@ public class MainUI extends JFrame implements ActionListener {
             return Integer.parseInt(dataTable.getModel().getValueAt(index, 0).toString());
     }
 
-    public void updateRevenue(double revenue) {
+    public void updateRevenue(double revenue)
+    {
         revenueLabel.setText(String.format("$%.2f", revenue));
     }
 }

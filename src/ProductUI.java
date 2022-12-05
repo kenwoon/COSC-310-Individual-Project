@@ -2,12 +2,15 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 
-public class ProductUI extends JDialog implements ActionListener {
+public class ProductUI extends JDialog implements ActionListener
+{
     JSpinner idInput, currentStockInput, sellPriceInput, buyPriceInput, shipTimeDayInput;
     JTextField nameInput;
     Product product;
 
-    public ProductUI(String title, Product _product) {   // change to allow a Product argument to pre-fill the boxes etc
+    public ProductUI(String title, Product _product)
+    {   
+        // change to allow a Product argument to pre-fill the boxes etc
         super(null, title, ModalityType.DOCUMENT_MODAL);   // set modality so the main thread in InventorySystem that calls this constructor waits until this dialog gets disposed
         
         JPanel root = new JPanel();
@@ -34,7 +37,9 @@ public class ProductUI extends JDialog implements ActionListener {
         root.add(subPanel, new GridBagConstraints(0, 0, 1, 1, 1, .5, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, dummy, 0, 0));
         root.add(submitButton, new GridBagConstraints(0, 1, 1, 1, 1, .5, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, dummy, 0, 0));
 
-        if (_product != null) {     // if we get a product passed in, pre-load the input box values
+        if (_product != null)
+        {     
+            // if we get a product passed in, pre-load the input box values
             idInput.setValue(_product.getId());
             nameInput.setText(_product.getName());
             currentStockInput.setValue(_product.getCurrentStock());
@@ -52,8 +57,10 @@ public class ProductUI extends JDialog implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("submit")) {
+    public void actionPerformed(ActionEvent e)
+    {
+        if (e.getActionCommand().equals("submit"))
+        {
             int id = (int)idInput.getValue();
             String name = nameInput.getText();
             int currentStock = (int)currentStockInput.getValue();
@@ -69,7 +76,9 @@ public class ProductUI extends JDialog implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Product prices cannot be 0.");
             else if (shipTimeDays == 0)
                 JOptionPane.showMessageDialog(this, "Product ship time cannot be 0.");
-            else {  // no errors, so create product and dispose
+            else
+            {  
+                // no errors, so create product and dispose
                 this.product = new Product(id, name, currentStock, sellPrice, buyPrice, shipTimeDays);
                 this.dispose();
             }

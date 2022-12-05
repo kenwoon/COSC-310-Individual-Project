@@ -3,14 +3,16 @@ import java.awt.event.*;
 import java.awt.*;
 import java.time.Period;
 
-public class SetTimeUI extends JDialog implements ActionListener {
+public class SetTimeUI extends JDialog implements ActionListener
+{
     JSpinner monthSpinner;
     JSpinner daySpinner;
     JSpinner hourSpinner;
 
     Period timeSpan;
 
-    public SetTimeUI() {
+    public SetTimeUI()
+    {
         super(null, "Fast-forward Time", ModalityType.DOCUMENT_MODAL);   // set modality so the main thread in InventorySystem that calls this constructor waits until this dialog gets disposed
         
         JPanel root = new JPanel();
@@ -38,8 +40,10 @@ public class SetTimeUI extends JDialog implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("submit")) {
+    public void actionPerformed(ActionEvent e)
+    {
+        if (e.getActionCommand().equals("submit"))
+        {
             int months = (int)monthSpinner.getValue(), days = (int)daySpinner.getValue();
             timeSpan = Period.of(0, months, days);
             this.dispose();

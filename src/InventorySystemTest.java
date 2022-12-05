@@ -10,11 +10,14 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class InventorySystemTest {
+public class InventorySystemTest
+{
     String statePath = "InventorySystem.state";
 
     @Test
-    public void DatabaseSaveLoadTest() {    // tests the database object's ability to edit products as well as save/load itself to a new csv file
+    public void DatabaseSaveLoadTest()
+    {    
+        // tests the database object's ability to edit products as well as save/load itself to a new csv file
         String testpath = "db_save_test.csv";
         Database db = new Database();       // start with no data
         
@@ -32,7 +35,9 @@ public class InventorySystemTest {
     }
 
     @Test
-    public void SaveStateTest() throws IOException {   // tests the savestate functionality
+    public void SaveStateTest() throws IOException
+    {   
+        // tests the savestate functionality
         if (new File(statePath).exists())
             Files.delete(Path.of(statePath)); // delete any currently existing state
 
@@ -60,7 +65,9 @@ public class InventorySystemTest {
 
         ArrayList<String> orderTest = getStringOrders(state);   // get a string array of the orders contained in state
         int totalOrders = 0;
-        for (Order i : test.orders) {   // for each order in test, check it's contained in state
+        for (Order i : test.orders)
+        {   
+            // for each order in test, check it's contained in state
             assertTrue(orderTest.contains(i.toString()));
             totalOrders++;
         }
@@ -68,7 +75,8 @@ public class InventorySystemTest {
     }
 
     @Test
-    public void EncryptionTest() throws IOException {  // tests that the encryption/decryption works properly
+    public void EncryptionTest() throws IOException
+    {  // tests that the encryption/decryption works properly
         if (new File(statePath).exists())
             Files.delete(Path.of(statePath)); // delete any currently existing state
 
@@ -86,7 +94,9 @@ public class InventorySystemTest {
         ArrayList<String> orderTest = getStringOrders(state);
         int totalOrders = 0;
         String current;
-        while ((current = stream.readLine()) != null) {     // read in a line for each order
+        while ((current = stream.readLine()) != null)
+        {     
+            // read in a line for each order
             String[] args = current.split(",");     // split the line on commas
             Order order = new Order(Database.getProductById(Integer.parseInt(args[0]), state.db.products).get(0), Integer.parseInt(args[1]), LocalDate.parse(args[2]));
             assertTrue(orderTest.contains(order.toString()));   // check that the array of order strings contains the order we've read in
@@ -96,7 +106,8 @@ public class InventorySystemTest {
         stream.close();
     }
 
-    public ArrayList<String> getStringOrders(ProgramState state) {
+    public ArrayList<String> getStringOrders(ProgramState state)
+    {
         ArrayList<String> orderTest = new ArrayList<String>();
         for (Order i : state.orders)  // state.save() only saves active orders, so add all active orders to orderTest
             if (i.isActive)

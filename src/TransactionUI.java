@@ -3,12 +3,15 @@ import java.awt.event.*;
 import java.awt.*;
 import java.util.*;
 
-public class TransactionUI extends JDialog implements ActionListener {
+public class TransactionUI extends JDialog implements ActionListener
+{
     JTable dataTable;
     ArrayList<JSpinner> spinners;
     ArrayList<Integer> ids;
     HashMap<Integer, Integer> products;      // product_id : quantity
-    public TransactionUI(JTable _dataTable, String title) {
+
+    public TransactionUI(JTable _dataTable, String title)
+    {
         super(null, title, ModalityType.DOCUMENT_MODAL);   // set modality so the main thread in InventorySystem that calls this constructor waits until this dialog gets disposed
         
         spinners = new ArrayList<JSpinner>();
@@ -23,7 +26,8 @@ public class TransactionUI extends JDialog implements ActionListener {
 
         JPanel subPanel = new JPanel();
         subPanel.setLayout(new GridLayout(dataTable.getRowCount(), 2, 5, 5));
-        for (int i = 0; i < dataTable.getRowCount(); i++) {
+        for (int i = 0; i < dataTable.getRowCount(); i++)
+        {
             String name = dataTable.getModel().getValueAt(i, 1).toString();
             JSpinner spinner = new JSpinner(new SpinnerNumberModel(0, 0, null, 1));
             subPanel.add(spinner);
@@ -44,8 +48,10 @@ public class TransactionUI extends JDialog implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("submit")) {
+    public void actionPerformed(ActionEvent e)
+    {
+        if (e.getActionCommand().equals("submit"))
+        {
             products = new HashMap<Integer, Integer>();
             for (int i = 0; i < dataTable.getRowCount(); i++)
                 products.put(ids.get(i), (int)spinners.get(i).getValue());
