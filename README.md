@@ -2,6 +2,10 @@
 
 This is the individual repository, building off from the public [repository](https://github.com/COSC-310-T5/Project) that team 5 of COSC 310 has been using to collaborate on the project throughout the semester in The University of British Columbia Okanagan.
 
+- [Version 1 demo]
+- [Version 2 demo]
+- [Version 3 demo](https://drive.google.com/file/d/1iw6gdrP6pkEradEn1h9Y5EjlQqLv0J1u/view?usp=share_link)
+
 ## Compile instructions
 
 - After cloning the whole repo, navigate to the src directory using the command prompt for your system (terminal/cmd/mac terminal).
