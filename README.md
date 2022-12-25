@@ -2,7 +2,7 @@
 
 This is the individual repository, building off from the public [repository](https://github.com/COSC-310-T5/Project) that team 5 of COSC 310 has been using to collaborate on the project throughout the semester in The University of British Columbia Okanagan.
 
-Video demonstrations and documentations
+Video demonstrations and documentations:
 - [Version 1 demo](https://drive.google.com/file/d/1sMKpRcV7mPDd1-Px57YnPVue0FPCZ_Fe/view?usp=share_link): [Official report documentation](https://docs.google.com/document/d/1O4QkWTRoADGN7hRm9vZs_12FNYX1AIfZTHog2RtuvK0/edit?usp=share_link)
 - [Version 2 demo](https://drive.google.com/file/d/1733UQOCgIZEZZIe0Do3bq7657Gr4e7Rp/view?usp=sharing): [Official report documentation](https://docs.google.com/document/d/1VwWtbkbFy8sfSOL-Qsik9a_1jo7IfCEBpSkOVcwhO2U/edit?usp=share_link)
 - [Version 3 demo](https://drive.google.com/file/d/1iw6gdrP6pkEradEn1h9Y5EjlQqLv0J1u/view?usp=share_link): [Official report documentation](https://docs.google.com/document/d/1beYZa5gUT18xnglfDNEf_XUhAE-edVj3cYJBe8HmHsQ/edit?usp=share_link)
